@@ -4,4 +4,4 @@ This is my Restaurants Reviews website. The app.js is the main file to run on se
 
 Deployed to AWS:
 
-Deployed to Heroku:
+Deployed to Heroku: https://lit-wave-45202.herokuapp.com/
