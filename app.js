@@ -19,7 +19,17 @@ var commentRoutes = require("./routes/comments");
 var restaurantRoutes = require("./routes/restaurants");
 var indexRoutes = require("./routes/index");
 
-mongoose.connect("mongodb://localhost:27017/sean_restaurants", {useNewUrlParser: true,useUnifiedTopology: true});
+//mongoose.connect("mongodb://localhost:27017/sean_restaurants", {useNewUrlParser: true,useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://Sean:57719779@seancluster-qiovu.mongodb.net/test?retryWrites=true&w=majority",{
+	userNewUrlParser: true,
+	useCreateIndex: true
+}).then(() => {
+	console.log("Connect to DB");
+}).catch(err =>{
+	console.log("ERROR", err.message);
+});
+
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
