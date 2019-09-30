@@ -52,11 +52,11 @@ router.post("/", middleware.isLoggedIn, middleware.checkCommentExistence, functi
 					comment.author.username = req.user.username;
 					comment.restaurant = restaurant;
 					comment.save();
-					//connect new comment to campground
+					//connect new comment to restaurant
 					restaurant.comments.push(comment);
 					restaurant.rating = calculateAverage(restaurant.comments);
 					restaurant.save();
-					//redirect to campground show page
+					//redirect to restaurant show page
 					req.flash("success", "Successfully added comment");
 					res.redirect("/restaurants/"+restaurant._id);
 				}
@@ -106,7 +106,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
 });
 
 //comment delete
-// /campgrounds/:id/comments/:comment_id
+// /restaurant/:id/comments/:comment_id
 router.delete("/:comment_id", middleware.checkCommentOwnership, function(req,res){
 	//findByIdAndRemove
 	Comment.findByIdAndRemove(req.params.comment_id, function(err){

@@ -9,14 +9,30 @@ var middleware = require("../middleware");
 
 // index route, show all restaurants
 router.get("/", function(req,res){
-	//get restaurants from db
-	Restaurant.find({}, function(err,allRestaurants){
-		if (err){
-			console.log(err);
-		} else {
-			res.render("restaurants/index",{restaurants: allRestaurants, page:"restaurants"});
-		}
-	}); 
+	//fuzzy search
+	var noMatch = null;
+	if(req.query.search) {
+		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+		Restaurant.find({name: regex}, function(err,allRestaurants){
+			if (err){
+				console.log(err);
+			} else {
+				if(allRestaurants.length < 1) {
+					noMatch = "No restaurant match that query, please try again.";
+              	}
+				res.render("restaurants/index",{restaurants: allRestaurants, page:"restaurants", noMatch: noMatch});
+			}
+		});
+	} else {
+		//get restaurants from db
+		Restaurant.find({}, function(err,allRestaurants){
+			if (err){
+				console.log(err);
+			} else {
+				res.render("restaurants/index",{restaurants: allRestaurants, page:"restaurants", noMatch: noMatch});
+			}
+		});
+	}
 });
 
 //create route, add new restaurant to database
@@ -102,5 +118,9 @@ router.delete("/:id", middleware.checkRestaurantOwnership, function(req,res){
 			}
 	});
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;
