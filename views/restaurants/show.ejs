@@ -1,0 +1,91 @@
+<% include ../partials/header %>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">Sean's Restaurants Reviews</p>
+			<div class="list-group">
+				<li class="list-group-item">Info1</li>
+				<li class="list-group-item">Info2</li>
+				<li class="list-group-item">Info3</li>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="thumbnail">
+				<img class="img-responsive" src="<%=restaurant.image%>">
+				<div class="caption-full">
+					<h4 class="pull-right">$<%= restaurant.price %>/person</h4>
+					<h4><a><%=restaurant.name%></a></h4>
+					<p><%=restaurant.address%></p>
+					<p><%=restaurant.description%></p>
+					<p>
+						<em>Submitted by <%=restaurant.author.username%></em>
+					</p>
+					<% if(currentUser && restaurant.author.id.equals(currentUser._id)) { %>	  
+					<a class="btn btn-warning" href="/restaurants/<%= restaurant._id %>/edit">Edit</a>
+					<form class="delete-form" action="/restaurants/<%= restaurant._id %>?_method=DELETE" method="POST">
+						<button class="btn btn-danger">
+							Delete
+						</button>
+					</form>
+					<% } %>
+				</div>
+			</div>
+			
+			<div class="thumbnail">
+				<div class="caption-full">
+					<% if (restaurant.rating === 0) { %>
+					<h5><em>No comment yet.</em></h5>
+					<% } else { %>
+					<p>
+						<span class="fa fa-star checked"></span>
+						<span class="fa fa-star <% if (restaurant.rating > 1.5) { %> checked <% } %>"></span>
+						<span class="fa fa-star <% if (restaurant.rating > 2.5) { %> checked <% } %>"></span>
+						<span class="fa fa-star <% if (restaurant.rating > 3.5) { %> checked <% } %>"></span>
+						<span class="fa fa-star <% if (restaurant.rating > 4.5) { %> checked <% } %>"></span>
+						<em>(total comments: <%= restaurant.comments.length %>)</em>
+					</p>
+					<p>
+						Current restaurant rating: <strong><%= restaurant.rating.toFixed(2) %></strong>
+					</p>
+					<p><h4>Latest comments for this restaurant:</h4></p>
+				<hr style="margin-top: 0;">
+				<% restaurant.comments.slice(0, 5).forEach(function(comment){ %>
+				<div class="row">
+					<div class="col-md-3">
+						<%- '<span class="fa fa-star checked"></span>'.repeat(comment.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - comment.rating) %>
+						<div>Comment by: <strong><%= comment.author.username %></strong></div>
+						<% if (restaurant.comments.length > 0) {%>
+						<span><em><%= comment.updatedAt.toDateString() %></em></span>
+						<% }%>
+					</div>
+					<div class="col-md-9">
+						<p style="text-align: justify; word-wrap: break-word;">
+							<%= comment.text %>
+						</p>
+						<% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+						<a class="btn btn-xs btn-warning" href="/restaurants/<%=restaurant._id %>/comments/<%=comment._id %>/edit">Edit</a>
+						<form id="delete-form" action="/restaurants/<%=restaurant._id %>/comments/<%=comment._id %>?_method=DELETE" method="POST">
+							<button class="btn btn-xs btn-danger">
+							Delete
+							</button>
+						</form>
+						<% } %>
+					</div>
+				</div>
+				<hr>
+				<% }); %>
+				<div style="margin-bottom: 10px;">
+					<h4><a href="/restaurants/<%= restaurant._id %>/comments"><i class="fa fa-search" aria-hidden="true"></i> See all comments</a></h4>
+				</div>
+				<% } %>
+				<div>
+					<a class="btn btn-primary btn-lg <% if (currentUser && restaurant.comments.some(function (comment) {return comment.author.id.equals(currentUser._id)})) { %> disabled <% } %>" href="/restaurants/<%= restaurant._id %>/comments/new">Write a New Comment</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<% include ../partials/footer %>
