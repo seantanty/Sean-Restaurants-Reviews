@@ -1,7 +1,6 @@
 //require frameworks
 var express = require("express");
 var app = express();
-//var request = require("request");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var flash = require("connect-flash");
@@ -21,7 +20,7 @@ var indexRoutes = require("./routes/index");
 
 //mongoose.connect("mongodb://localhost:27017/sean_restaurants", {useNewUrlParser: true,useUnifiedTopology: true});
 mongoose.connect("mongodb+srv://Sean:57719779@seancluster-qiovu.mongodb.net/test?retryWrites=true&w=majority",{
-	userNewUrlParser: true,
+	useNewUrlParser: true,
 	useCreateIndex: true
 }).then(() => {
 	console.log("Connect to DB");
