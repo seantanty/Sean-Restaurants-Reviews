@@ -1,7 +1,7 @@
 //require frameworks
 var express = require("express");
 var app = express();
-var request = require("request");
+//var request = require("request");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var flash = require("connect-flash");
