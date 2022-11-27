@@ -2,4 +2,4 @@
 
 This is my Restaurants Reviews website. The app.js is the main file to run on server. 
 
-Deployed to Heroku: https://lit-wave-45202.herokuapp.com/
+Since heroku has cancelled its free tier, this website is no longer avaiable online.
